@@ -19,7 +19,9 @@ int main(int argc,  char * argv[]) {
 
     Sniff sniff(params);
 
-    if (chdir(params.dir) != 0) {    
+    //call the sniff run function
+    
+    if (chdir(params.dir) != 0) {
         perror("chdir failed");
         return 1;
     }

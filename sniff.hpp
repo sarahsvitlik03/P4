@@ -18,7 +18,9 @@ class Sniff {
 private:
     Params& params;
     string fileName;
+    string currentDir;
     string pathName;
+    string dir;
     vector <string> sniffWords;
     vector<FileID> suspiciousFiles;
 
@@ -27,6 +29,8 @@ public:
     Sniff(Params& paramsObj);
     void unpack(const string& argString);
     void oneDir();
+    void travel(string current, string dirName);
+    void run (string dirName);
     FileID oneFile(const string& fileName);
     ~Sniff();
  };

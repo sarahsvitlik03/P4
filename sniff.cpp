@@ -29,6 +29,23 @@ void Sniff::unpack(const string& argString) {
     }
 }
 
+void Sniff::run(string dir){
+    //Set the current and path to the starting directory name
+     pathName = dir;
+    // Change the working directory to current.
+    // Call travel() function
+    //Construct a vector containing all files with sniff-words
+    //Loop through the vector and print.
+}
+
+void Sniff::travel(string current, string dirName){
+    //open the current directory, chdir has already been called
+    //if it isn't a directory, process it
+    //If it is a directory, recursively call travel()
+    // Use the concatenated path (currentPath + '/' + newDirectoryName) as the first parameter.
+    //Change directory back to .. after procesessing the subdir
+
+}
 void Sniff::oneDir() {
     DIR* dir = opendir(".");
     if (!dir){
