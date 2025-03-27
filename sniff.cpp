@@ -30,6 +30,8 @@ void Sniff::unpack(const string& argString) {
 }
 
 void Sniff::run(string dir){
+    
+    
     //Set the current and path to the starting directory name
      pathName = dir;
     // Change the working directory to current.
@@ -38,14 +40,53 @@ void Sniff::run(string dir){
     //Loop through the vector and print.
 }
 
-void Sniff::travel(string current, string dirName){
-    //open the current directory, chdir has already been called
-    //if it isn't a directory, process it
-    //If it is a directory, recursively call travel()
-    // Use the concatenated path (currentPath + '/' + newDirectoryName) as the first parameter.
-    //Change directory back to .. after procesessing the subdir
+//Recursively processes a directory entry to find sniff words
+void Sniff::travel(const string& current, const string& dirName){
+    
+    //Open the current directory
+    DIR* dir = opendir(".");
+    if (!dir){
+        cerr << "Failed to open the current directory." << endl;
+        return;
+    }
+    
+    struct dirent* entry;
+    while((entry = readdir(dir)) != nullptr) {
+        string entryName = entry->d_name;
+        
+        int count = 0;
 
+        count++;
+        if (count <= 2){
+            //Skips the first two entries
+        }
+        
+        //Path to the current entry
+        string entryPath = current + "/" + entryName;
+        
+        struct stat entryStat;
+        if (stat(entryPath.c_str(), &entryStat) == -1) {
+            cerr << "Failed to stat entry: " << entryName << endl;
+            continue;
+        }
+
+        if (S_ISDIR(entryStat.st_mode)) {
+            // Recursive call for subdirectories if it is a directory
+            travel(entryPath, entryName);
+        } else if (S_ISREG(entryStat.st_mode)) {
+            // Process regular files using oneFile
+            FileID fileID = oneFile(entryPath);
+
+            // Check if sniff-words were found and store the file
+            if (!fileID.sniffWords.empty()) {
+                suspiciousFiles.push_back(fileID);
+            }
+        }
+    }
+    closedir(dir);
 }
+ 
+
 void Sniff::oneDir() {
     DIR* dir = opendir(".");
     if (!dir){

@@ -29,7 +29,7 @@ public:
     Sniff(Params& paramsObj);
     void unpack(const string& argString);
     void oneDir();
-    void travel(string current, string dirName);
+    void travel(const string& current, const string& dirName);
     void run (string dirName);
     FileID oneFile(const string& fileName);
     ~Sniff();
